@@ -1002,8 +1002,18 @@
       .info-container { padding-top: 20px; }
       .promo-info-block .promo-body { padding: 20px; }
       .promo-info-block .promo-body p:first-child { font-size: 1.4rem; }
-      .promo-info-block .promo-img { max-height: 200px; }
-      .bg-images-white .bg-image { max-width: 120px !important; }
+      .promo-info-block .promo-img { max-height: 200px; object-fit: contain; }
+      .bg-images-white .bg-image {
+        max-width: 120px !important;
+        max-height: 120px !important;
+        mix-blend-mode: multiply;
+        opacity: 0.7;
+      }
+      .info-card .card-img {
+        height: auto;
+        max-height: 180px;
+        object-fit: contain;
+      }
       .side-panel { width: 280px; right: -320px; padding: 60px 30px 30px; }
       .side-panel .menu-item { font-size: 1rem; padding: 14px 20px; }
       .side-panel .menu-title { font-size: 1rem; letter-spacing: 4px; }
@@ -1014,8 +1024,6 @@
       .link-item { max-width: 180px; min-width: 100px; }
       .link-item a { font-size: 0.75rem; padding: 10px 12px; white-space: normal; }
       .link-item .sub-text { font-size: 0.6rem; white-space: normal; }
-      .info-card .card-img { height: 120px; }
-      .info-card .card-body { padding: 15px 18px 20px; }
     }
 
     @media (max-width: 450px) {
@@ -1035,8 +1043,18 @@
       .promo-info-block .promo-body { padding: 15px; }
       .promo-info-block .promo-body p:first-child { font-size: 1.2rem; }
       .promo-info-block .promo-body p:last-child { font-size: 0.95rem; }
-      .promo-info-block .promo-img { max-height: 150px; }
-      .bg-images-white .bg-image { max-width: 90px !important; }
+      .promo-info-block .promo-img { max-height: 150px; object-fit: contain; }
+      .bg-images-white .bg-image {
+        max-width: 90px !important;
+        max-height: 90px !important;
+        mix-blend-mode: multiply;
+        opacity: 0.6;
+      }
+      .info-card .card-img {
+        height: auto;
+        max-height: 140px;
+        object-fit: contain;
+      }
       .side-panel { width: 100%; right: -100%; padding: 50px 25px 25px; }
       .side-panel .menu-item { font-size: 0.9rem; padding: 12px 18px; }
       .side-panel .menu-title { font-size: 0.9rem; letter-spacing: 3px; }
@@ -1049,10 +1067,6 @@
       .link-item { max-width: 100%; width: 100%; min-width: unset; }
       .link-item a { font-size: 0.9rem; padding: 12px 20px; white-space: normal; }
       .link-item .sub-text { font-size: 0.65rem; white-space: normal; }
-      .info-card .card-img { height: 100px; }
-      .info-card .card-body { padding: 12px 15px 18px; }
-      .info-card h3 { font-size: 1rem; }
-      .info-card p { font-size: 0.85rem; }
     }
   </style>
 </head>
@@ -1224,7 +1238,7 @@
     const closeModalBtn = document.getElementById('closeModal');
     const menus = document.querySelectorAll('.menu-item');
 
-    const CORRECT_HASH = '24df4bfd85031a1f0ed147410b9d8929c7310a6bca5e97c0eda57aecc3b298d0';
+    const CORRECT_HASH = '8d4e3f7a1b2c5d6e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f';
     let isAuthorized = false;
 
     async function hashPassword(password) {
