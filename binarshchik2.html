@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BINARSHCHIK</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #000;
+      height: 100vh;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .screen-intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+      transform: translateY(0);
+      overflow: hidden;
+    }
+
+    .screen-intro.hidden {
+      transform: translateY(-100%);
+    }
+
+    .intro-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .floating-words-black {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      animation: fadeInWords 1.2s ease-out 1.5s forwards;
+    }
+
+    @keyframes fadeInWords {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .floating-words-black span {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      animation: floatWord 14s infinite alternate ease-in-out;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+    }
+
+    .floating-words-black span:nth-child(1) { top: 8%; left: 5%; animation-duration: 14s; }
+    .floating-words-black span:nth-child(2) { top: 15%; right: 8%; animation-duration: 11s; animation-delay: -2s; }
+    .floating-words-black span:nth-child(3) { bottom: 25%; left: 3%; animation-duration: 13s; animation-delay: -4s; }
+    .floating-words-black span:nth-child(4) { bottom: 30%; right: 5%; animation-duration: 15s; animation-delay: -1s; }
+    .floating-words-black span:nth-child(5) { top: 45%; left: 2%; animation-duration: 12s; animation-delay: -3s; }
+
+    @keyframes floatWord {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 0.5; }
+      25% { transform: translate(20px, -25px) rotate(3deg); opacity: 1; }
+      50% { transform: translate(-15px, 15px) rotate(-3deg); opacity: 0.6; }
+      75% { transform: translate(25px, 20px) rotate(2deg); opacity: 1; }
+      100% { transform: translate(-10px, -20px) rotate(-2deg); opacity: 0.7; }
+    }
+
+    .oval-wrapper {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      aspect-ratio: 2.2 / 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      margin: auto 0;
+      z-index: 1;
+    }
+
+    .dot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: dotAppearAndFade 1.6s ease-out 0.3s forwards;
+      z-index: 2;
+    }
+
+    @keyframes dotAppearAndFade {
+      0% { opacity: 0; transform: scale(0.2); }
+      30% { opacity: 1; transform: scale(1); }
+      80% { opacity: 1; transform: scale(1.5); }
+      100% { opacity: 0; transform: scale(2); }
+    }
+
+    .oval {
+      position: absolute;
+      width: 0px;
+      height: 0px;
+      border-radius: 50%;
+      background: #000;
+      border: 2px solid #fff;
+      opacity: 0;
+      animation: ovalGrow 1.4s ease-out 1.2s forwards;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(255, 255, 255, 0.08);
+      z-index: 1;
+    }
+
+    @keyframes ovalGrow {
+      0% { width: 20px; height: 20px; opacity: 1; border-radius: 50%; }
+      40% { width: 400px; height: 200px; opacity: 1; border-radius: 50%; }
+      100% { width: 700px; height: 200px; opacity: 1; border-radius: 50%; border-color: rgba(255, 255, 255, 0.9); }
+    }
+
+    .oval-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.95) 90%);
+    }
+
+    .oval-bg::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-conic-gradient(rgba(255,255,255,0.03) 0% 10%, transparent 10% 20%);
+      animation: rotateBg 30s linear infinite;
+      border-radius: 50%;
+    }
+
+    @keyframes rotateBg {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .floating-dots {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .floating-dots span {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: #fff;
+      border-radius: 50%;
+      animation: floatDot 8s infinite ease-in-out alternate;
+    }
+
+    .floating-dots span:nth-child(1) { top: 15%; left: 10%; animation-duration: 7s; }
+    .floating-dots span:nth-child(2) { top: 70%; left: 85%; animation-duration: 9s; animation-delay: -2s; }
+    .floating-dots span:nth-child(3) { top: 40%; left: 75%; animation-duration: 6s; animation-delay: -4s; }
+    .floating-dots span:nth-child(4) { top: 80%; left: 20%; animation-duration: 10s; animation-delay: -1s; }
+    .floating-dots span:nth-child(5) { top: 20%; left: 60%; animation-duration: 8s; animation-delay: -3s; }
+
+    @keyframes floatDot {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+      100% { transform: translate(20px, -30px) scale(1.8); opacity: 0.9; }
+    }
+
+    .oval-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      opacity: 0;
+      animation: fadeInContent 1s ease-out 2.2s forwards;
+      padding: 0 35px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    @keyframes fadeInContent {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      flex-shrink: 0;
+      background: #111;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .username {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+    }
+
+    .subtitle-black {
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+
+    .promo-block {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      opacity: 0;
+      animation: fadeInPromo 1s ease-out 3.5s forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      z-index: 5;
+      padding: 0 20px;
+    }
+
+    .promo-block .promo-btn {
+      pointer-events: auto;
+    }
+
+    @keyframes fadeInPromo {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .promo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #fff;
+      text-transform: uppercase;
+      background: transparent;
+      padding: 0;
+      border: none;
+      backdrop-filter: none;
+    }
+
+    .promo-btn {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 16px 55px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
+    }
+
+    .promo-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 60px rgba(255, 255, 255, 0.2);
+      background: #f2f2f2;
+    }
+
+    .promo-btn:active {
+      transform: scale(0.97);
+    }
+
+    .screen-info {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      color: #000;
+      padding: 50px 20px;
+      overflow-y: auto;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease 0.2s;
+    }
+
+    .screen-info.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .screen-info.blurred .info-container,
+    .screen-info.blurred .promo-info-block,
+    .screen-info.blurred .info-grid,
+    .screen-info.blurred .join-button-wrapper,
+    .screen-info.blurred .info-links,
+    .screen-info.blurred .white-header,
+    .screen-info.blurred .fixed-avatar {
+      filter: blur(4px);
+      transition: filter 0.3s ease;
+    }
+
+    .fixed-avatar {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      z-index: 60;
+      width: 70px;
+      height: 70px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease 0.3s, filter 0.3s ease;
+    }
+
+    .screen-info.visible .fixed-avatar {
+      opacity: 1;
+    }
+
+    .fixed-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #000;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    .rotating-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      transform: translate(-50%, -50%);
+      animation: spinText 8s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes spinText {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .rotating-text span {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: 0 0;
+      font-size: 0.65rem;
+      font-weight: 900;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 0px;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .burger-menu {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      z-index: 200;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px;
+      opacity: 0;
+      transition: opacity 0.8s ease 0.5s;
+      pointer-events: none;
+    }
+
+    .screen-info.visible .burger-menu {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .burger-menu span {
+      display: block;
+      width: 30px;
+      height: 3px;
+      background: #000;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .burger-menu span:nth-child(3) {
+      width: 30px;
+    }
+
+    .burger-menu.active span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+    .burger-menu.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger-menu.active span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 350px;
+      height: 100%;
+      background: #fff;
+      z-index: 150;
+      transition: right 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 80px 40px 40px;
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+    }
+
+    .side-panel.open {
+      right: 0;
+    }
+
+    .side-panel .menu-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      color: #000;
+      margin-bottom: 40px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 12px;
+    }
+
+    .side-panel .menu-item {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #000;
+      text-decoration: none;
+      padding: 16px 24px;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      letter-spacing: 1px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 6px;
+      transform: none !important;
+      position: relative;
+    }
+
+    .side-panel .menu-item:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .side-panel .menu-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 1.5px solid rgba(0, 0, 0, 0.12);
+      border-radius: 40px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .side-panel .menu-item:hover::after {
+      opacity: 1;
+    }
+
+    .side-panel .menu-item.locked {
+      opacity: 0.5;
+    }
+
+    .side-panel .menu-item.locked::before {
+      content: '🔒 ';
+      font-size: 0.8rem;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 300;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 24px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-box h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .modal-box input {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .modal-box input:focus {
+      border-color: #000;
+    }
+
+    .modal-box .modal-btn {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 14px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .modal-box .modal-btn:hover {
+      background: #222;
+      transform: scale(1.02);
+    }
+
+    .modal-box .error-msg {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      margin-top: 12px;
+      min-height: 24px;
+    }
+
+    .modal-box .close-modal {
+      margin-top: 16px;
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-decoration: underline;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 140;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    .bg-images-white {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease 0.5s;
+    }
+
+    .screen-info.visible .bg-images-white {
+      opacity: 1;
+    }
+
+    .bg-images-white .bg-image {
+      position: absolute;
+      opacity: 0.45;
+      animation: floatImage 20s infinite alternate ease-in-out;
+      filter: grayscale(30%) brightness(1.1) contrast(1.2);
+      max-width: 180px;
+      max-height: 180px;
+      object-fit: contain;
+    }
+
+    .bg-images-white .bg-image:nth-child(1) {
+      top: 8%;
+      left: 3%;
+      animation-duration: 16s;
+      animation-delay: -2s;
+      max-width: 160px;
+      opacity: 0.5;
+    }
+    .bg-images-white .bg-image:nth-child(2) {
+      top: 20%;
+      right: 5%;
+      animation-duration: 19s;
+      animation-delay: -5s;
+      max-width: 200px;
+      opacity: 0.4;
+    }
+    .bg-images-white .bg-image:nth-child(3) {
+      bottom: 25%;
+      left: 5%;
+      animation-duration: 15s;
+      animation-delay: -7s;
+      max-width: 170px;
+      opacity: 0.45;
+    }
+    .bg-images-white .bg-image:nth-child(4) {
+      bottom: 30%;
+      right: 3%;
+      animation-duration: 20s;
+      animation-delay: -3s;
+      max-width: 220px;
+      opacity: 0.35;
+    }
+    .bg-images-white .bg-image:nth-child(5) {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-duration: 22s;
+      animation-delay: -4s;
+      max-width: 280px;
+      opacity: 0.25;
+    }
+
+    @keyframes floatImage {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      25% { transform: translate(30px, -35px) rotate(6deg) scale(1.1); }
+      50% { transform: translate(-25px, 25px) rotate(-6deg) scale(0.9); }
+      75% { transform: translate(35px, 20px) rotate(4deg) scale(1.05); }
+      100% { transform: translate(-20px, -30px) rotate(-4deg) scale(0.95); }
+    }
+
+    .white-header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+      z-index: 2;
+      transition: filter 0.3s ease;
+    }
+
+    .black-username {
+      font-size: 5rem;
+      font-weight: 900;
+      letter-spacing: 8px;
+      color: #000;
+      display: inline-block;
+      position: relative;
+      min-height: 7rem;
+    }
+
+    .black-username .char {
+      display: inline-block;
+      opacity: 0;
+      animation: charAppear 0.08s forwards;
+    }
+
+    @keyframes charAppear {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .divider-line {
+      width: 0;
+      height: 3px;
+      background: #000;
+      margin: 15px auto 15px;
+      border: none;
+      animation: lineGrow 1s ease-out forwards;
+    }
+
+    @keyframes lineGrow {
+      0% { width: 0; }
+      100% { width: 200px; }
+    }
+
+    .black-subtitle {
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: 4px;
+      color: #333;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeInSubtitle 1s ease-out 1.5s forwards;
+    }
+
+    @keyframes fadeInSubtitle {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .info-container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding-top: 30px;
+      position: relative;
+      z-index: 1;
+      transition: filter 0.3s ease;
+    }
+
+    .promo-info-block {
+      background: #000;
+      color: #fff;
+      border-radius: 24px;
+      margin-bottom: 50px;
+      border-left: 6px solid #fff;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      position: relative;
+      z-index: 2;
+      transition: filter 0.3s ease;
+      overflow: hidden;
+    }
+
+    .promo-info-block .promo-img {
+      width: 100%;
+      height: auto;
+      max-height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .promo-info-block .promo-body {
+      padding: 25px 30px 30px;
+    }
+
+    .promo-info-block .promo-body p:first-child {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .promo-info-block .promo-body p:last-child {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #eee;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 2;
+      transition: filter 0.3s ease;
+    }
+
+    .info-card {
+      background: #f8f8f8;
+      border-radius: 20px;
+      border: 1px solid #eee;
+      cursor: default;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .info-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .info-card .card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .info-card .card-body {
+      padding: 20px 25px 25px;
+    }
+
+    .info-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+      color: #000;
+    }
+
+    .info-card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #333;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .info-card .highlight {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .join-button-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 40px 0 30px;
+      position: relative;
+      z-index: 2;
+      transition: filter 0.3s ease;
+    }
+
+    .join-button {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      padding: 14px 40px;
+      border-radius: 60px;
+      border: 2px solid #000;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .join-button:hover {
+      background: #fff;
+      color: #000;
+      transform: scale(1.02);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .info-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 10px;
+      border-top: 1px solid #ddd;
+      padding-top: 30px;
+      position: relative;
+      z-index: 2;
+      transition: filter 0.3s ease;
+      flex-wrap: wrap;
+    }
+
+    .link-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+      max-width: 250px;
+      min-width: 140px;
+    }
+
+    .link-item a {
+      color: #000;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 14px 20px;
+      border: 2px solid #000;
+      border-radius: 60px;
+      transition: all 0.25s ease;
+      letter-spacing: 2px;
+      font-size: 0.9rem;
+      background: #fff;
+      text-align: center;
+      width: 100%;
+      white-space: nowrap;
+    }
+
+    .link-item a:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    .link-item .sub-text {
+      font-size: 0.7rem;
+      color: #555;
+      font-weight: 400;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 700px) {
+      .oval-wrapper { width: 98%; }
+      .oval-content { gap: 15px; padding: 0 15px; }
+      .avatar { width: 70px; height: 70px; }
+      .username { font-size: 1.8rem; letter-spacing: 2px; }
+      .subtitle-black { font-size: 0.6rem; letter-spacing: 1px; }
+      .promo-text { font-size: 1rem; letter-spacing: 2px; }
+      .promo-btn { padding: 12px 30px; font-size: 0.8rem; }
+      .promo-block { bottom: 30px; }
+      @keyframes ovalGrow {
+        0% { width: 20px; height: 20px; opacity: 1; border-radius: 50%; }
+        40% { width: 80vw; height: 30vw; opacity: 1; border-radius: 50%; }
+        100% { width: 92vw; height: 35vw; opacity: 1; border-radius: 50%; }
+      }
+      .black-username { font-size: 3.2rem; letter-spacing: 4px; }
+      .black-subtitle { font-size: 0.9rem; letter-spacing: 2px; }
+      .info-grid { grid-template-columns: 1fr; gap: 20px; }
+      .join-button { padding: 12px 20px; font-size: 1rem; max-width: 100%; }
+      .fixed-avatar { width: 60px; height: 60px; top: 15px; left: 15px; }
+      .rotating-text { width: 100px; height: 100px; }
+      .rotating-text span { font-size: 0.55rem; }
+      .info-container { padding-top: 20px; }
+      .promo-info-block .promo-body { padding: 20px; }
+      .promo-info-block .promo-body p:first-child { font-size: 1.4rem; }
+      .promo-info-block .promo-img { max-height: 150px; }
+      .bg-images-white .bg-image { max-width: 120px !important; }
+      .side-panel { width: 280px; right: -320px; padding: 60px 30px 30px; }
+      .side-panel .menu-item { font-size: 1rem; padding: 14px 20px; }
+      .side-panel .menu-title { font-size: 1rem; letter-spacing: 4px; }
+      .burger-menu { top: 20px; right: 20px; }
+      .burger-menu span { width: 25px; height: 2.5px; }
+      .burger-menu span:nth-child(3) { width: 25px; }
+      .info-links { gap: 12px; flex-direction: row; }
+      .link-item { max-width: 180px; min-width: 100px; }
+      .link-item a { font-size: 0.75rem; padding: 10px 12px; white-space: normal; }
+      .link-item .sub-text { font-size: 0.6rem; white-space: normal; }
+      .info-card .card-img { height: 120px; }
+      .info-card .card-body { padding: 15px 18px 20px; }
+    }
+
+    @media (max-width: 450px) {
+      .oval-content { flex-direction: column; gap: 8px; text-align: center; }
+      .user-info { align-items: center; }
+      .username { font-size: 1.5rem; }
+      .subtitle-black { font-size: 0.5rem; letter-spacing: 1px; }
+      .avatar { width: 60px; height: 60px; }
+      .promo-text { font-size: 0.8rem; letter-spacing: 1px; }
+      .promo-btn { padding: 10px 24px; font-size: 0.7rem; }
+      .black-username { font-size: 2.2rem; letter-spacing: 2px; }
+      .black-subtitle { font-size: 0.7rem; letter-spacing: 1px; }
+      .fixed-avatar { width: 50px; height: 50px; top: 10px; left: 10px; }
+      .rotating-text { width: 90px; height: 90px; }
+      .rotating-text span { font-size: 0.45rem; }
+      .info-container { padding-top: 10px; }
+      .promo-info-block .promo-body { padding: 15px; }
+      .promo-info-block .promo-body p:first-child { font-size: 1.2rem; }
+      .promo-info-block .promo-body p:last-child { font-size: 0.95rem; }
+      .promo-info-block .promo-img { max-height: 120px; }
+      .bg-images-white .bg-image { max-width: 90px !important; }
+      .side-panel { width: 100%; right: -100%; padding: 50px 25px 25px; }
+      .side-panel .menu-item { font-size: 0.9rem; padding: 12px 18px; }
+      .side-panel .menu-title { font-size: 0.9rem; letter-spacing: 3px; }
+      .burger-menu { top: 15px; right: 15px; }
+      .burger-menu span { width: 22px; height: 2px; }
+      .burger-menu span:nth-child(3) { width: 22px; }
+      .modal-box { padding: 30px 25px; }
+      .modal-box h2 { font-size: 1.2rem; }
+      .info-links { flex-direction: column; align-items: center; gap: 16px; }
+      .link-item { max-width: 100%; width: 100%; min-width: unset; }
+      .link-item a { font-size: 0.9rem; padding: 12px 20px; white-space: normal; }
+      .link-item .sub-text { font-size: 0.65rem; white-space: normal; }
+      .info-card .card-img { height: 100px; }
+      .info-card .card-body { padding: 12px 15px 18px; }
+      .info-card h3 { font-size: 1rem; }
+      .info-card p { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="screen-intro" id="introScreen">
+    <div class="intro-content">
+      <div class="floating-words-black">
+        <span>Большой курс</span>
+        <span>Гайд по БО</span>
+        <span>Чат Торговли</span>
+        <span>Разборы Сделок</span>
+        <span>Закрытый канал</span>
+      </div>
+
+      <div class="oval-wrapper">
+        <div class="dot"></div>
+        <div class="oval">
+          <div class="oval-bg"></div>
+          <div class="floating-dots">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="oval-content">
+            <img src="https://i.postimg.cc/RZNxd0dx/Screenshot-12.png" alt="Avatar" class="avatar" id="avatarImg">
+            <div class="user-info">
+              <div class="username">BINARSHCHIK</div>
+              <div class="subtitle-black">Легенда Бинарного Трейдинга</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="promo-block">
+        <div class="promo-text">Специальная акция с Бинарщиком</div>
+        <button class="promo-btn" id="showInfoBtn">Узнать подробности</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen-info" id="infoScreen">
+
+    <div class="bg-images-white">
+      <img src="https://i.postimg.cc/3xprBj24/kisspng-candlestick-chart-headphones-smartphone-telephone-5ba01e46cb8651-0115642015372201668336.webp" alt="bg" class="bg-image">
+      <img src="https://i.postimg.cc/3xprBj24/kisspng-candlestick-chart-headphones-smartphone-telephone-5ba01e46cb8651-0115642015372201668336.webp" alt="bg" class="bg-image">
+      <img src="https://i.postimg.cc/3xprBj24/kisspng-candlestick-chart-headphones-smartphone-telephone-5ba01e46cb8651-0115642015372201668336.webp" alt="bg" class="bg-image">
+      <img src="https://i.postimg.cc/3xprBj24/kisspng-candlestick-chart-headphones-smartphone-telephone-5ba01e46cb8651-0115642015372201668336.webp" alt="bg" class="bg-image">
+      <img src="https://i.postimg.cc/3xprBj24/kisspng-candlestick-chart-headphones-smartphone-telephone-5ba01e46cb8651-0115642015372201668336.webp" alt="bg" class="bg-image">
+    </div>
+
+    <div class="burger-menu" id="burgerMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="side-panel" id="sidePanel">
+      <div class="menu-title">Навигация</div>
+      <button class="menu-item locked" data-page="chat">Чат Трейдеров</button>
+      <button class="menu-item locked" data-page="course">Большой Курс</button>
+      <button class="menu-item locked" data-page="guides">Гайд по Бинаркам</button>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-box">
+        <h2>🔒 Доступ ограничен</h2>
+        <p>Этот раздел доступен только для участников закрытого канала. Введите пароль для доступа.</p>
+        <input type="password" id="passwordInput" placeholder="Введите пароль">
+        <button class="modal-btn" id="submitPassword">Активировать доступ</button>
+        <div class="error-msg" id="errorMsg"></div>
+        <button class="close-modal" id="closeModal">Закрыть</button>
+      </div>
+    </div>
+
+    <div class="fixed-avatar">
+      <img src="https://i.postimg.cc/RZNxd0dx/Screenshot-12.png" alt="Avatar">
+      <div class="rotating-text" id="rotatingText"></div>
+    </div>
+
+    <div class="info-container">
+      <div class="white-header">
+        <div class="black-username" id="blackUsername"></div>
+        <div class="divider-line" id="dividerLine"></div>
+        <div class="black-subtitle">Легенда Бинарного Трейдинга</div>
+      </div>
+
+	<div class="promo-info-block">
+	  <img class="promo-img" src="https://i.postimg.cc/kGcKSWwn/5a5ae667c7797b2c3b192e1e6699ba64.jpg" alt="Специальная акция">
+	  <div class="promo-body">
+		<p>🔥 Специальная акция</p>
+		<p>Получите полный гайд по бинарным опционам, доступ к Большому курсу с самыми частыми проблемами. Чат совместной торговли, Личные разборы ваших сделок абсолютно бесплатно! А также бонус на пополнение.</p>
+	  </div>
+	</div>
+
+      <h2 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 25px; letter-spacing: -0.5px;">Преимущества закрытого канала</h2>
+      <div class="info-grid" id="infoGrid">
+        <div class="info-card">
+          <img class="card-img" src="https://i.postimg.cc/pXYN4rc5/bol-soj-kurs.png" alt="Большой курс">
+          <div class="card-body">
+            <h3>📚 Большой курс по Трейдингу</h3>
+            <p>Все популярные проблемы, трудности и вопросы, с которыми сталкивается каждый трейдер, уже разобраны мной в Большом Курсе. Видео-гайды с прямыми решениями в подробных шагах — всё это ждет тебя в закрытом комьюнити.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <img class="card-img" src="https://i.postimg.cc/L86WWTZT/bol-soj-kurs-1.png" alt="Закрытый чат">
+          <div class="card-body">
+            <h3>💬 Закрытый чат</h3>
+            <p>Чат совместной торговли, нацеленный на обучение (не сигналы). Отработки, критика, исправление ошибок, личная связь со мной, личные разборы сделок от меня и многое другое.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <img class="card-img" src="https://i.postimg.cc/rmWZ4Zvt/gajd-po-binarkam.png" alt="Гайд">
+          <div class="card-body">
+            <h3>📖 Гайд по Бинарным Опционам</h3>
+            <p>Файл СО ВСЕЙ нужной информацией. Вся теория, необходимая для торговли, собрана в одном документе. Изучив Гайд, можете смело переходить к практике, не боясь упущений.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <img class="card-img" src="https://i.postimg.cc/QxS4cTnQ/gajd-po-binarkam-1.png" alt="Лучшие условия">
+          <div class="card-body">
+            <h3>🚀 Лучшие условия для вступления в СНГ</h3>
+            <p>Абсолютно бесплатно! Пару кликов — и ты с нами в «Закрытом канале BINARSHCHIK».</p>
+            <span class="highlight">Бесплатно</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <img class="card-img" src="https://i.postimg.cc/LXdNmBnY/THINK-4.png" alt="Никакого скама">
+          <div class="card-body">
+            <h3>🛡️ Никакого Скама</h3>
+            <p>Боты, сигналы и прочий шлак под видом «легкого заработка» здесь не приветствуется. Только обучение. Только собственный анализ. Только реальное развитие и заработок.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="join-button-wrapper">
+        <a href="https://t.me/nedosygaem" class="join-button" target="_blank">Вступить в закрытый канал</a>
+      </div>
+
+      <div class="info-links">
+        <div class="link-item">
+          <a href="https://t.me/+RxfFugUfTso5MjMy" target="_blank">Телеграм</a>
+          <span class="sub-text">Информативные посты. Квизы. Тупые шутки.</span>
+        </div>
+        <div class="link-item">
+          <a href="https://u3.shortink.io/register?utm_campaign=824687&utm_source=affiliate&utm_medium=sr&a=SlbrjqIdtGUp9p&al=1692857&ac=desyatdollarov&cid=925734&code=WELCOME50" target="_blank">Платформа для торговли</a>
+          <span class="sub-text">Промокод на +50% депозита от $10</span>
+        </div>
+        <div class="link-item">
+          <a href="https://youtube.com/@binarshchik?si=2WYavpsZ4irJahAW" target="_blank">Ютуб</a>
+          <span class="sub-text">Бесплатное обучение ЛУЧШИМ Стратегиям</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const introScreen = document.getElementById('introScreen');
+    const infoScreen = document.getElementById('infoScreen');
+    const showInfoBtn = document.getElementById('showInfoBtn');
+    const burgerMenu = document.getElementById('burgerMenu');
+    const sidePanel = document.getElementById('sidePanel');
+    const overlay = document.getElementById('overlay');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const passwordInput = document.getElementById('passwordInput');
+    const submitPassword = document.getElementById('submitPassword');
+    const errorMsg = document.getElementById('errorMsg');
+    const closeModalBtn = document.getElementById('closeModal');
+    const menus = document.querySelectorAll('.menu-item');
+
+    const CORRECT_HASH = '8d4e3f7a1b2c5d6e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f';
+    let isAuthorized = false;
+
+    async function hashPassword(password) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    showInfoBtn.addEventListener('click', function() {
+        introScreen.classList.add('hidden');
+        infoScreen.classList.add('visible');
+        createRotatingText();
+        animateUsername();
+    });
+
+    burgerMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+        sidePanel.classList.toggle('open');
+        overlay.classList.toggle('active');
+
+        if (sidePanel.classList.contains('open')) {
+            infoScreen.classList.add('blurred');
+        } else {
+            infoScreen.classList.remove('blurred');
+        }
+    });
+
+    overlay.addEventListener('click', function() {
+        closeMenu();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeMenu();
+            modalOverlay.classList.remove('active');
+        }
+    });
+
+    function closeMenu() {
+        burgerMenu.classList.remove('active');
+        sidePanel.classList.remove('open');
+        overlay.classList.remove('active');
+        infoScreen.classList.remove('blurred');
+    }
+
+    menus.forEach(item => {
+        item.addEventListener('click', function() {
+            const page = this.dataset.page;
+            
+            if (!isAuthorized) {
+                modalOverlay.classList.add('active');
+                passwordInput.value = '';
+                errorMsg.textContent = '';
+                passwordInput.focus();
+                return;
+            }
+
+            navigateTo(page);
+        });
+    });
+
+    submitPassword.addEventListener('click', async function() {
+        const input = passwordInput.value.trim();
+        if (input === '') {
+            errorMsg.textContent = 'Введите пароль';
+            return;
+        }
+        
+        const inputHash = await hashPassword(input);
+        
+        if (inputHash === CORRECT_HASH) {
+            isAuthorized = true;
+            modalOverlay.classList.remove('active');
+            errorMsg.textContent = '';
+            passwordInput.value = '';
+            
+            menus.forEach(item => {
+                item.classList.remove('locked');
+            });
+            
+            showNotification('Доступ активирован! ✅');
+        } else {
+            errorMsg.textContent = 'Неверный пароль. Попробуйте снова.';
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    });
+
+    passwordInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            submitPassword.click();
+        }
+    });
+
+    closeModalBtn.addEventListener('click', function() {
+        modalOverlay.classList.remove('active');
+        errorMsg.textContent = '';
+        passwordInput.value = '';
+    });
+
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+            modalOverlay.classList.remove('active');
+            errorMsg.textContent = '';
+            passwordInput.value = '';
+        }
+    });
+
+    function navigateTo(page) {
+        closeMenu();
+        const titles = {
+            'chat': 'Чат Трейдеров',
+            'course': 'Большой Курс',
+            'guides': 'Гайд по Бинаркам'
+        };
+        showNotification(`📂 Раздел "${titles[page] || page}" загружается...`);
+    }
+
+    function showNotification(message) {
+        const existing = document.querySelector('.custom-notification');
+        if (existing) existing.remove();
+        
+        const notif = document.createElement('div');
+        notif.className = 'custom-notification';
+        notif.textContent = message;
+        Object.assign(notif.style, {
+            position: 'fixed',
+            bottom: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#000',
+            color: '#fff',
+            padding: '16px 32px',
+            borderRadius: '40px',
+            fontSize: '1rem',
+            fontWeight: '600',
+            zIndex: '500',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+            opacity: '0',
+            transition: 'opacity 0.4s ease',
+            fontFamily: "'Inter', sans-serif",
+            maxWidth: '90%',
+            textAlign: 'center'
+        });
+        document.body.appendChild(notif);
+        
+        setTimeout(() => { notif.style.opacity = '1'; }, 10);
+        setTimeout(() => {
+            notif.style.opacity = '0';
+            setTimeout(() => notif.remove(), 400);
+        }, 3000);
+    }
+
+    function createRotatingText() {
+        const container = document.getElementById('rotatingText');
+        if (!container) return;
+        container.innerHTML = '';
+        const text = " B I N A R S H C H IK Б И Н А Р Щ И К";
+        const chars = text.split('');
+        const total = chars.length;
+        const radius = 49;
+        const offsetX = 4;
+        const offsetY = 6;
+
+        chars.forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            const angle = (index / total) * 360;
+            const rad = (angle * Math.PI) / 180;
+            const x = radius * Math.sin(rad);
+            const y = -radius * Math.cos(rad);
+            span.style.transform = `translate(calc(-50% + ${x}px + ${offsetX}px), calc(-50% + ${y}px + ${offsetY}px)) rotate(${angle}deg)`;
+            span.style.transformOrigin = '0 0';
+            container.appendChild(span);
+        });
+    }
+
+    function animateUsername() {
+        const container = document.getElementById('blackUsername');
+        if (!container) return;
+        const text = "BINARSHCHIK";
+        container.innerHTML = '';
+        
+        text.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.textContent = char;
+            span.style.animationDelay = `${index * 0.08}s`;
+            container.appendChild(span);
+        });
+
+        const totalDuration = text.length * 0.08 + 0.3;
+        setTimeout(() => {
+            const divider = document.getElementById('dividerLine');
+            if (divider) {
+                divider.style.animation = 'lineGrow 1s ease-out forwards';
+            }
+        }, totalDuration * 1000);
+    }
+
+    const avatar = document.getElementById('avatarImg');
+    if (avatar) {
+        avatar.addEventListener('error', function() {
+            this.style.display = 'none';
+            const parent = this.parentNode;
+            const fallback = document.createElement('div');
+            fallback.textContent = 'B';
+            fallback.style.width = '110px';
+            fallback.style.height = '110px';
+            fallback.style.borderRadius = '50%';
+            fallback.style.background = '#111';
+            fallback.style.color = '#fff';
+            fallback.style.display = 'flex';
+            fallback.style.justifyContent = 'center';
+            fallback.style.alignItems = 'center';
+            fallback.style.fontSize = '3.2rem';
+            fallback.style.fontWeight = '700';
+            fallback.style.border = '2px solid rgba(255,255,255,0.3)';
+            fallback.style.flexShrink = '0';
+            parent.insertBefore(fallback, this);
+            this.remove();
+        });
+    }
+
+    const fixedAvatarImg = document.querySelector('.fixed-avatar img');
+    if (fixedAvatarImg) {
+        fixedAvatarImg.addEventListener('error', function() {
+            this.style.display = 'none';
+            const parent = this.parentNode;
+            const fallback = document.createElement('div');
+            fallback.textContent = 'B';
+            fallback.style.width = '100%';
+            fallback.style.height = '100%';
+            fallback.style.borderRadius = '50%';
+            fallback.style.background = '#111';
+            fallback.style.color = '#fff';
+            fallback.style.display = 'flex';
+            fallback.style.justifyContent = 'center';
+            fallback.style.alignItems = 'center';
+            fallback.style.fontSize = '2.5rem';
+            fallback.style.fontWeight = '700';
+            fallback.style.border = '3px solid #000';
+            fallback.style.position = 'relative';
+            fallback.style.zIndex = '2';
+            parent.insertBefore(fallback, this);
+            this.remove();
+        });
+    }
+});
+  </script>
+</body>
+</html>
