@@ -944,6 +944,7 @@
       white-space: nowrap;
     }
 
+    /* --- МОБИЛЬНАЯ ВЕРСИЯ (до 700px) --- */
     @media (max-width: 700px) {
       .username-main { font-size: 2.8rem; letter-spacing: 4px; }
       .avatar-main { width: 90px; height: 90px; }
@@ -960,7 +961,7 @@
       .info-container { padding-top: 20px; }
       .promo-info-block .promo-body { padding: 20px; }
       .promo-info-block .promo-body p:first-child { font-size: 1.4rem; }
-      .promo-info-block .promo-img { max-height: 200px; object-fit: contain; }
+      .promo-info-block .promo-img { max-height: 200px; object-fit: cover; }
       .bg-images-white .bg-image {
         max-width: 120px !important;
         max-height: 120px !important;
@@ -968,9 +969,9 @@
         opacity: 0.7;
       }
       .info-card .card-img {
-        height: auto;
-        max-height: 180px;
-        object-fit: contain;
+        width: 100% !important;
+        height: 160px !important;
+        object-fit: cover !important;
       }
       .side-panel { width: 280px; right: -320px; padding: 60px 30px 30px; }
       .side-panel .menu-item { font-size: 1rem; padding: 14px 20px; }
@@ -983,8 +984,32 @@
       .link-item a { font-size: 0.75rem; padding: 10px 12px; white-space: normal; min-height: 44px; }
       .link-item .sub-text { font-size: 0.6rem; white-space: normal; }
       .dollar { font-size: 1.8rem !important; }
+
+      /* Убираем текст вокруг аватарки на мобилках */
+      .rotating-text {
+        display: none !important;
+      }
+
+      /* Убираем летающие свечи на мобилках */
+      .bg-images-white {
+        display: none !important;
+      }
+
+      /* Уменьшаем ник на белом экране */
+      .black-username {
+        font-size: 2.8rem !important;
+        letter-spacing: 3px !important;
+      }
+
+      /* Картинки в карточках растягиваем на всю ширину */
+      .info-card .card-img {
+        width: 100% !important;
+        height: 160px !important;
+        object-fit: cover !important;
+      }
     }
 
+    /* --- ОЧЕНЬ МАЛЕНЬКИЕ ТЕЛЕФОНЫ (до 450px) --- */
     @media (max-width: 450px) {
       .username-main { font-size: 2.2rem; letter-spacing: 2px; }
       .avatar-main { width: 70px; height: 70px; }
@@ -999,7 +1024,7 @@
       .promo-info-block .promo-body { padding: 15px; }
       .promo-info-block .promo-body p:first-child { font-size: 1.2rem; }
       .promo-info-block .promo-body p:last-child { font-size: 0.95rem; }
-      .promo-info-block .promo-img { max-height: 150px; object-fit: contain; }
+      .promo-info-block .promo-img { max-height: 150px; object-fit: cover; }
       .bg-images-white .bg-image {
         max-width: 90px !important;
         max-height: 90px !important;
@@ -1007,9 +1032,9 @@
         opacity: 0.6;
       }
       .info-card .card-img {
-        height: auto;
-        max-height: 140px;
-        object-fit: contain;
+        width: 100% !important;
+        height: 140px !important;
+        object-fit: cover !important;
       }
       .side-panel { width: 100%; right: -100%; padding: 50px 25px 25px; }
       .side-panel .menu-item { font-size: 0.9rem; padding: 12px 18px; }
@@ -1024,6 +1049,29 @@
       .link-item a { font-size: 0.85rem; padding: 12px 16px; white-space: normal; min-height: 44px; }
       .link-item .sub-text { font-size: 0.65rem; white-space: normal; }
       .dollar { font-size: 1.4rem !important; }
+
+      /* Убираем текст вокруг аватарки на мобилках */
+      .rotating-text {
+        display: none !important;
+      }
+
+      /* Убираем летающие свечи на мобилках */
+      .bg-images-white {
+        display: none !important;
+      }
+
+      /* Ещё сильнее уменьшаем ник на белом экране */
+      .black-username {
+        font-size: 2.2rem !important;
+        letter-spacing: 2px !important;
+      }
+
+      /* Картинки в карточках растягиваем на всю ширину */
+      .info-card .card-img {
+        width: 100% !important;
+        height: 140px !important;
+        object-fit: cover !important;
+      }
     }
   </style>
 </head>
