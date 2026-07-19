@@ -13,19 +13,20 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: #000;
+      background-color: #0A0A0A;
       height: 100vh;
       overflow: hidden;
       color: #fff;
     }
 
+    /* --- ЭКРАН 1: ЧЕРНЫЙ БАРХАТ --- */
     .screen-intro {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #000;
+      background-color: #0A0A0A;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -50,7 +51,8 @@
       align-items: center;
     }
 
-    .floating-words-black {
+    /* --- ЛЕТАЮЩИЕ ДОЛЛАРЫ (ЖИРНЫЕ И ЗАМЕТНЫЕ) --- */
+    .floating-dollars {
       position: absolute;
       top: 0;
       left: 0;
@@ -59,160 +61,65 @@
       pointer-events: none;
       z-index: 0;
       opacity: 0;
-      animation: fadeInWords 1.2s ease-out 1.5s forwards;
+      animation: fadeInDollars 1.2s ease-out 0.5s forwards;
     }
 
-    @keyframes fadeInWords {
+    @keyframes fadeInDollars {
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
 
-    .floating-words-black span {
+    .dollar {
       position: absolute;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      animation: floatWord 14s infinite alternate ease-in-out;
-      text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.2);
+      animation: floatDollar 14s infinite ease-in-out alternate;
+      user-select: none;
+      font-family: 'Inter', sans-serif;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
     }
 
-    .floating-words-black span:nth-child(1) { top: 8%; left: 5%; animation-duration: 14s; }
-    .floating-words-black span:nth-child(2) { top: 15%; right: 8%; animation-duration: 11s; animation-delay: -2s; }
-    .floating-words-black span:nth-child(3) { bottom: 25%; left: 3%; animation-duration: 13s; animation-delay: -4s; }
-    .floating-words-black span:nth-child(4) { bottom: 30%; right: 5%; animation-duration: 15s; animation-delay: -1s; }
-    .floating-words-black span:nth-child(5) { top: 45%; left: 2%; animation-duration: 12s; animation-delay: -3s; }
+    .dollar:nth-child(1) { top: 8%; left: 5%; animation-duration: 16s; font-size: 3rem; }
+    .dollar:nth-child(2) { top: 18%; right: 12%; animation-duration: 13s; animation-delay: -3s; font-size: 2.2rem; }
+    .dollar:nth-child(3) { top: 55%; left: 3%; animation-duration: 18s; animation-delay: -5s; font-size: 3.2rem; }
+    .dollar:nth-child(4) { bottom: 25%; right: 8%; animation-duration: 15s; animation-delay: -2s; font-size: 2rem; }
+    .dollar:nth-child(5) { top: 40%; left: 50%; animation-duration: 20s; animation-delay: -7s; font-size: 4rem; }
+    .dollar:nth-child(6) { top: 70%; left: 25%; animation-duration: 17s; animation-delay: -4s; font-size: 2.8rem; }
+    .dollar:nth-child(7) { top: 25%; left: 80%; animation-duration: 14s; animation-delay: -6s; font-size: 1.8rem; }
+    .dollar:nth-child(8) { bottom: 15%; left: 40%; animation-duration: 19s; animation-delay: -1s; font-size: 3rem; }
+    .dollar:nth-child(9) { top: 50%; right: 5%; animation-duration: 16s; animation-delay: -8s; font-size: 2.4rem; }
+    .dollar:nth-child(10) { bottom: 45%; left: 70%; animation-duration: 21s; animation-delay: -3s; font-size: 1.8rem; }
+    .dollar:nth-child(11) { top: 10%; left: 35%; animation-duration: 15s; animation-delay: -5s; font-size: 2.6rem; }
+    .dollar:nth-child(12) { bottom: 60%; right: 20%; animation-duration: 18s; animation-delay: -9s; font-size: 3.1rem; }
+    .dollar:nth-child(13) { top: 80%; left: 10%; animation-duration: 13s; animation-delay: -2s; font-size: 2rem; }
+    .dollar:nth-child(14) { top: 30%; left: 60%; animation-duration: 17s; animation-delay: -6s; font-size: 2.5rem; }
+    .dollar:nth-child(15) { bottom: 10%; right: 35%; animation-duration: 20s; animation-delay: -4s; font-size: 3.3rem; }
+    .dollar:nth-child(16) { top: 5%; left: 55%; animation-duration: 14s; animation-delay: -7s; font-size: 2rem; }
+    .dollar:nth-child(17) { bottom: 35%; left: 15%; animation-duration: 19s; animation-delay: -5s; font-size: 2.2rem; }
+    .dollar:nth-child(18) { top: 65%; right: 40%; animation-duration: 16s; animation-delay: -2s; font-size: 2.8rem; }
+    .dollar:nth-child(19) { bottom: 5%; left: 80%; animation-duration: 22s; animation-delay: -8s; font-size: 2rem; }
+    .dollar:nth-child(20) { top: 45%; left: 20%; animation-duration: 15s; animation-delay: -4s; font-size: 2.5rem; }
 
-    @keyframes floatWord {
-      0% { transform: translate(0, 0) rotate(0deg); opacity: 0.5; }
-      25% { transform: translate(20px, -25px) rotate(3deg); opacity: 1; }
-      50% { transform: translate(-15px, 15px) rotate(-3deg); opacity: 0.6; }
-      75% { transform: translate(25px, 20px) rotate(2deg); opacity: 1; }
-      100% { transform: translate(-10px, -20px) rotate(-2deg); opacity: 0.7; }
+    @keyframes floatDollar {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.1; }
+      25% { transform: translate(30px, -40px) rotate(8deg) scale(1.2); opacity: 0.35; }
+      50% { transform: translate(-25px, 25px) rotate(-6deg) scale(0.9); opacity: 0.15; }
+      75% { transform: translate(35px, 20px) rotate(5deg) scale(1.1); opacity: 0.4; }
+      100% { transform: translate(-15px, -30px) rotate(-6deg) scale(0.95); opacity: 0.1; }
     }
 
-    .oval-wrapper {
+    /* --- ОСНОВНОЙ КОНТЕНТ ПО ЦЕНТРУ --- */
+    .content-wrapper {
       position: relative;
-      width: 90%;
-      max-width: 900px;
-      aspect-ratio: 2.2 / 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-shrink: 0;
-      margin: auto 0;
       z-index: 1;
-    }
-
-    .dot {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #fff;
-      border-radius: 50%;
-      opacity: 0;
-      animation: dotAppearAndFade 1.6s ease-out 0.3s forwards;
-      z-index: 2;
-    }
-
-    @keyframes dotAppearAndFade {
-      0% { opacity: 0; transform: scale(0.2); }
-      30% { opacity: 1; transform: scale(1); }
-      80% { opacity: 1; transform: scale(1.5); }
-      100% { opacity: 0; transform: scale(2); }
-    }
-
-    .oval {
-      position: absolute;
-      width: 0px;
-      height: 0px;
-      border-radius: 50%;
-      background: #000;
-      border: 2px solid #fff;
-      opacity: 0;
-      animation: ovalGrow 1.4s ease-out 1.2s forwards;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      box-shadow: 0 0 60px rgba(255, 255, 255, 0.08);
-      z-index: 1;
-    }
-
-    @keyframes ovalGrow {
-      0% { width: 20px; height: 20px; opacity: 1; border-radius: 50%; }
-      40% { width: 400px; height: 200px; opacity: 1; border-radius: 50%; }
-      100% { width: 700px; height: 200px; opacity: 1; border-radius: 50%; border-color: rgba(255, 255, 255, 0.9); }
-    }
-
-    .oval-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.95) 90%);
-    }
-
-    .oval-bg::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: repeating-conic-gradient(rgba(255,255,255,0.03) 0% 10%, transparent 10% 20%);
-      animation: rotateBg 30s linear infinite;
-      border-radius: 50%;
-    }
-
-    @keyframes rotateBg {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .floating-dots {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
-    .floating-dots span {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: #fff;
-      border-radius: 50%;
-      animation: floatDot 8s infinite ease-in-out alternate;
-    }
-
-    .floating-dots span:nth-child(1) { top: 15%; left: 10%; animation-duration: 7s; }
-    .floating-dots span:nth-child(2) { top: 70%; left: 85%; animation-duration: 9s; animation-delay: -2s; }
-    .floating-dots span:nth-child(3) { top: 40%; left: 75%; animation-duration: 6s; animation-delay: -4s; }
-    .floating-dots span:nth-child(4) { top: 80%; left: 20%; animation-duration: 10s; animation-delay: -1s; }
-    .floating-dots span:nth-child(5) { top: 20%; left: 60%; animation-duration: 8s; animation-delay: -3s; }
-
-    @keyframes floatDot {
-      0% { transform: translate(0, 0) scale(1); opacity: 0.2; }
-      100% { transform: translate(20px, -30px) scale(1.8); opacity: 0.9; }
-    }
-
-    .oval-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      gap: 25px;
+      gap: 8px;
       opacity: 0;
-      animation: fadeInContent 1s ease-out 2.2s forwards;
-      padding: 0 35px;
-      width: 100%;
-      justify-content: center;
+      animation: fadeInContent 1.2s ease-out 0.5s forwards;
     }
 
     @keyframes fadeInContent {
@@ -220,41 +127,90 @@
       100% { opacity: 1; transform: scale(1); }
     }
 
-    .avatar {
-      width: 110px;
-      height: 110px;
+    /* --- АВАТАРКА (серебряное свечение) --- */
+    .avatar-wrapper {
+      position: relative;
+      margin-bottom: 6px;
+    }
+
+    .avatar-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: -25px;
+      width: calc(100% + 50px);
+      height: calc(100% + 50px);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+      border-radius: 50%;
+      animation: glowPulse 3.5s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0% { transform: scale(0.9); opacity: 0.4; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.4; }
+    }
+
+    .avatar-main {
+      position: relative;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      flex-shrink: 0;
-      background: #111;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: #1a1a1a;
+      box-shadow: 0 0 60px rgba(255, 255, 255, 0.04);
+      display: block;
+      z-index: 2;
     }
 
-    .user-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+    /* --- НИК (ГРАДИЕНТ ОТ БЕЛОГО К СЕРЕБРЯНОМУ) --- */
+    .username-main {
+      font-size: 4.5rem;
+      font-weight: 800;
+      letter-spacing: 6px;
+      background: linear-gradient(180deg, #ffffff 0%, #c0c0c0 60%, #a0a0a0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-top: 4px;
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.04);
     }
 
-    .username {
-      font-size: 3rem;
-      font-weight: 700;
-      letter-spacing: 4px;
-      line-height: 1;
-      color: #fff;
-      text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+    /* --- РАЗДЕЛИТЕЛЬНАЯ ЛИНИЯ --- */
+    .divider-line-main {
+      width: 0;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      margin: 10px auto 12px;
+      border: none;
+      animation: lineGrowMain 1.2s ease-out 1.2s forwards;
     }
 
-    .subtitle-black {
-      font-size: 0.8rem;
+    @keyframes lineGrowMain {
+      0% { width: 0; opacity: 0; }
+      100% { width: 140px; opacity: 1; }
+    }
+
+    /* --- ПОДПИСЬ (белая, тонкая) --- */
+    .subtitle-main {
+      font-size: 1rem;
       font-weight: 300;
-      letter-spacing: 2px;
-      color: rgba(255, 255, 255, 0.75);
-      margin-top: 8px;
+      letter-spacing: 4px;
+      color: rgba(255, 255, 255, 0.6);
       text-transform: uppercase;
+      opacity: 0;
+      animation: fadeInSubtitle 1.2s ease-out 1.8s forwards;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
     }
 
+    @keyframes fadeInSubtitle {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- БЛОК С АКЦИЕЙ --- */
     .promo-block {
       position: absolute;
       bottom: 40px;
@@ -262,7 +218,7 @@
       width: 100%;
       text-align: center;
       opacity: 0;
-      animation: fadeInPromo 1s ease-out 3.5s forwards;
+      animation: fadeInPromo 1s ease-out 2.8s forwards;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -281,42 +237,44 @@
     }
 
     .promo-text {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.2rem;
+      font-weight: 400;
       letter-spacing: 4px;
-      color: #fff;
+      color: rgba(255, 255, 255, 0.4);
       text-transform: uppercase;
       background: transparent;
       padding: 0;
       border: none;
-      backdrop-filter: none;
     }
 
     .promo-btn {
       background: #fff;
-      color: #000;
+      color: #0A0A0A;
       border: none;
       padding: 16px 55px;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 3px;
       border-radius: 40px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-transform: uppercase;
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 40px rgba(255, 255, 255, 0.08);
     }
 
     .promo-btn:hover {
       transform: scale(1.04);
-      box-shadow: 0 0 60px rgba(255, 255, 255, 0.2);
-      background: #f2f2f2;
+      background: #0A0A0A;
+      color: #fff;
+      box-shadow: 0 6px 50px rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .promo-btn:active {
       transform: scale(0.97);
     }
 
+    /* --- ЭКРАН 2: БЕЛЫЙ --- */
     .screen-info {
       position: fixed;
       top: 0;
@@ -979,21 +937,13 @@
     }
 
     @media (max-width: 700px) {
-      .oval-wrapper { width: 98%; }
-      .oval-content { gap: 15px; padding: 0 15px; }
-      .avatar { width: 70px; height: 70px; }
-      .username { font-size: 1.8rem; letter-spacing: 2px; }
-      .subtitle-black { font-size: 0.6rem; letter-spacing: 1px; }
+      .username-main { font-size: 2.8rem; letter-spacing: 4px; }
+      .avatar-main { width: 90px; height: 90px; }
+      .subtitle-main { font-size: 0.8rem; letter-spacing: 2px; }
       .promo-text { font-size: 1rem; letter-spacing: 2px; }
       .promo-btn { padding: 12px 30px; font-size: 0.8rem; }
       .promo-block { bottom: 30px; }
-      @keyframes ovalGrow {
-        0% { width: 20px; height: 20px; opacity: 1; border-radius: 50%; }
-        40% { width: 80vw; height: 30vw; opacity: 1; border-radius: 50%; }
-        100% { width: 92vw; height: 35vw; opacity: 1; border-radius: 50%; }
-      }
-      .black-username { font-size: 3.2rem; letter-spacing: 4px; }
-      .black-subtitle { font-size: 0.9rem; letter-spacing: 2px; }
+      .divider-line-main { width: 100px; }
       .info-grid { grid-template-columns: 1fr; gap: 20px; }
       .join-button { padding: 12px 20px; font-size: 1rem; max-width: 100%; }
       .fixed-avatar { width: 60px; height: 60px; top: 15px; left: 15px; }
@@ -1002,8 +952,18 @@
       .info-container { padding-top: 20px; }
       .promo-info-block .promo-body { padding: 20px; }
       .promo-info-block .promo-body p:first-child { font-size: 1.4rem; }
-      .promo-info-block .promo-img { max-height: 200px; }
-      .bg-images-white .bg-image { max-width: 120px !important; }
+      .promo-info-block .promo-img { max-height: 200px; object-fit: contain; }
+      .bg-images-white .bg-image {
+        max-width: 120px !important;
+        max-height: 120px !important;
+        mix-blend-mode: multiply;
+        opacity: 0.7;
+      }
+      .info-card .card-img {
+        height: auto;
+        max-height: 180px;
+        object-fit: contain;
+      }
       .side-panel { width: 280px; right: -320px; padding: 60px 30px 30px; }
       .side-panel .menu-item { font-size: 1rem; padding: 14px 20px; }
       .side-panel .menu-title { font-size: 1rem; letter-spacing: 4px; }
@@ -1014,20 +974,16 @@
       .link-item { max-width: 180px; min-width: 100px; }
       .link-item a { font-size: 0.75rem; padding: 10px 12px; white-space: normal; }
       .link-item .sub-text { font-size: 0.6rem; white-space: normal; }
-      .info-card .card-img { height: 120px; }
-      .info-card .card-body { padding: 15px 18px 20px; }
+      .dollar { font-size: 1.8rem !important; }
     }
 
     @media (max-width: 450px) {
-      .oval-content { flex-direction: column; gap: 8px; text-align: center; }
-      .user-info { align-items: center; }
-      .username { font-size: 1.5rem; }
-      .subtitle-black { font-size: 0.5rem; letter-spacing: 1px; }
-      .avatar { width: 60px; height: 60px; }
+      .username-main { font-size: 2.2rem; letter-spacing: 2px; }
+      .avatar-main { width: 70px; height: 70px; }
+      .subtitle-main { font-size: 0.65rem; letter-spacing: 1px; }
       .promo-text { font-size: 0.8rem; letter-spacing: 1px; }
       .promo-btn { padding: 10px 24px; font-size: 0.7rem; }
-      .black-username { font-size: 2.2rem; letter-spacing: 2px; }
-      .black-subtitle { font-size: 0.7rem; letter-spacing: 1px; }
+      .divider-line-main { width: 70px; }
       .fixed-avatar { width: 50px; height: 50px; top: 10px; left: 10px; }
       .rotating-text { width: 90px; height: 90px; }
       .rotating-text span { font-size: 0.45rem; }
@@ -1035,8 +991,18 @@
       .promo-info-block .promo-body { padding: 15px; }
       .promo-info-block .promo-body p:first-child { font-size: 1.2rem; }
       .promo-info-block .promo-body p:last-child { font-size: 0.95rem; }
-      .promo-info-block .promo-img { max-height: 150px; }
-      .bg-images-white .bg-image { max-width: 90px !important; }
+      .promo-info-block .promo-img { max-height: 150px; object-fit: contain; }
+      .bg-images-white .bg-image {
+        max-width: 90px !important;
+        max-height: 90px !important;
+        mix-blend-mode: multiply;
+        opacity: 0.6;
+      }
+      .info-card .card-img {
+        height: auto;
+        max-height: 140px;
+        object-fit: contain;
+      }
       .side-panel { width: 100%; right: -100%; padding: 50px 25px 25px; }
       .side-panel .menu-item { font-size: 0.9rem; padding: 12px 18px; }
       .side-panel .menu-title { font-size: 0.9rem; letter-spacing: 3px; }
@@ -1049,10 +1015,7 @@
       .link-item { max-width: 100%; width: 100%; min-width: unset; }
       .link-item a { font-size: 0.9rem; padding: 12px 20px; white-space: normal; }
       .link-item .sub-text { font-size: 0.65rem; white-space: normal; }
-      .info-card .card-img { height: 100px; }
-      .info-card .card-body { padding: 12px 15px 18px; }
-      .info-card h3 { font-size: 1rem; }
-      .info-card p { font-size: 0.85rem; }
+      .dollar { font-size: 1.4rem !important; }
     }
   </style>
 </head>
@@ -1060,35 +1023,45 @@
 
   <div class="screen-intro" id="introScreen">
     <div class="intro-content">
-      <div class="floating-words-black">
-        <span>Большой курс</span>
-        <span>Гайд по БО</span>
-        <span>Чат Торговли</span>
-        <span>Разборы Сделок</span>
-        <span>Закрытый канал</span>
+
+      <!-- ЛЕТАЮЩИЕ ДОЛЛАРЫ (20 штук, жирные и заметные) -->
+      <div class="floating-dollars">
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
+        <span class="dollar">$</span>
       </div>
 
-      <div class="oval-wrapper">
-        <div class="dot"></div>
-        <div class="oval">
-          <div class="oval-bg"></div>
-          <div class="floating-dots">
-            <span></span><span></span><span></span><span></span><span></span>
-          </div>
-          <div class="oval-content">
-            <img src="images/ava.png" alt="Avatar" class="avatar" id="avatarImg">
-            <div class="user-info">
-              <div class="username">BINARSHCHIK</div>
-              <div class="subtitle-black">Легенда Бинарного Трейдинга</div>
-            </div>
-          </div>
+      <div class="content-wrapper">
+        <div class="avatar-wrapper">
+          <img src="images/ava.png" alt="Avatar" class="avatar-main" id="avatarImg">
         </div>
+        <div class="username-main">BINARSHCHIK</div>
+        <div class="divider-line-main"></div>
+        <div class="subtitle-main">Легенда Бинарного Трейдинга</div>
       </div>
 
       <div class="promo-block">
         <div class="promo-text">Специальная акция с Бинарщиком</div>
         <button class="promo-btn" id="showInfoBtn">Узнать подробности</button>
       </div>
+
     </div>
   </div>
 
