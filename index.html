@@ -1013,6 +1013,26 @@
       transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
       box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.06);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+
+    .course-card::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .course-card::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .course-card::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    .course-card::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .course-overlay.active .course-card {
